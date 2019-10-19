@@ -4,7 +4,8 @@ import androidx.annotation.ColorInt;
 
 public class Data {
 
-    public static String[] normative = {  "vocabulary form. It expresses a subject in the sentence.",
+    public static String[] normative = {
+            "vocabulary form. It expresses a subject in the sentence.",
             "první",
             "used to name or identify people, things, ideas, places, animals.",
             "no changes to its form (no endings) are needed.",
@@ -15,7 +16,9 @@ public class Data {
             "CZECH REPUBLIC is not A BIG COUNTRY.",
             "ČESKÁ REPUBLIKA není VELKÁ ZEMĚ."};
 
-    public static String[] genitive = {  "druhý", "expresses a possessive or partitive meaning.",
+    public static String[] genitive = {
+            "druhý",
+            "expresses a possessive or partitive meaning.",
             "bez - without",
             "blízko - near",
             "do - to, into, until",
@@ -25,14 +28,18 @@ public class Data {
             "vedle - next to",
             "z / ze - from"};
 
-    public static String[] dative = { "třetí", "expresses an indirect object in the sentence.",
+    public static String[] dative = {
+            "třetí",
+            "expresses an indirect object in the sentence.",
             "k / ke - to, towards",
             "kvůli - because of, due to",
             "navzdor(y) - in spite of, despite",
             "proti / naproti- against",
             "vůči - towards, to, against"};
 
-    public static String[] accusative = { "čtvrtý", "expresses a direct object in the sentence.",
+    public static String[] accusative = {
+            "čtvrtý",
+            "expresses a direct object in the sentence.",
             "na - on, onto (direction)",
             "o - for",
             "pro - for",
@@ -40,16 +47,22 @@ public class Data {
             "za - for, on behalf of, in the course of",
             "Mít rád + the... "};
 
-    public static String[] vocative = {"pátý",  "form with which we address people",
+    public static String[] vocative = {
+            "pátý",
+            "form with which we address people",
             "if you want to address someone by name or call out to them by name you use the"};
 
-    public static String[] locative = {  "šestý", "expresses a location.",
+    public static String[] locative = {
+            "šestý",
+            "expresses a location.",
             "na - on (location)",
             "o - about",
             "po - after",
             "v / ve - in"};
 
-    public static String[] instrumental = {  "sedmý", "a mean or .... by which an activity is done.",
+    public static String[] instrumental = {
+            "sedmý",
+            "a mean or .... by which an activity is done.",
             "mezi - between",
             "nad - above, over",
             "pod - below, under",
@@ -59,12 +72,23 @@ public class Data {
             "English often has “with” or “by (means of)",
             "onemocnět - become sick with"};
 
-    public static String [][] categories = { normative, genitive, dative, accusative,
-            vocative, locative, instrumental };
+    public static String[][] categories = {
+            normative,
+            genitive,
+            dative,
+            accusative,
+            vocative,
+            locative,
+            instrumental };
 
-    public static String [] categoryNames = { "normative", "genitive", "dative", "accusative",
-            "vocative", "locative", "instrumental" };
-
+    public static String[] categoryNames = {
+            "normative",
+            "genitive",
+            "dative",
+            "accusative",
+            "vocative",
+            "locative",
+            "instrumental" };
 
     @ColorInt public static final int MYRED         = 0xCCCC9999;
     @ColorInt public static final int MYGREEN       = 0xCC99CC99;
