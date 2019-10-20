@@ -23,7 +23,8 @@ Stack<String> categoriesStack = new Stack<>();
 
 public class FullscreenActivity extends FullscreenActivitySuper {
 
-    private ArrayList<ArrayList<String>> list = new ArrayList<>();
+    private ArrayList<ArrayList<String>> list = new ArrayList<>();//Arrays.stream(getCategoriesObject()[idOfCorrectCategory]).anyMatch(answer::equals);
+    private boolean correct = false;
 
     public FullscreenActivity() {
         super();
@@ -37,13 +38,14 @@ public class FullscreenActivity extends FullscreenActivitySuper {
 
     int idOfCorrectCategory = -1;
     int NUMBER_OF_ANSWERS = 5;
-    int streak = 0;
 
     private String[] listOfAnswers;
     private Random random = new Random();
 
     public boolean debug = false;
     final int DEBUG_ITEMS = 2;
+
+    boolean init = false;
 
     public void drawUi() {
         setContentView(R.layout.activity_fullscreen);
@@ -54,23 +56,25 @@ public class FullscreenActivity extends FullscreenActivitySuper {
         final FullscreenActivitySuper thiz = this;
         setListView(findViewById(R.id.myListView));
 
+        getListView().setOnItemClickListener(null);
         getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
+                correct = false;
                 String answer = (String) adapter.getItemAtPosition(position);
                 ViewState.get().buttonClick(answer);
 
                 verifyAnswerAndMark(answer);
 
-                final String[] mobileArray2 = getCategories();
-                getListView().setAdapter(new ArrayAdapter<>(thiz, R.layout.mylistviewitemlayout, mobileArray2));
+                drawUi();
             }
         });
+
 
         ListView listView = findViewById(R.id.myListView);
         listView.setAdapter(adapter2);
 
-        populateTextField();
+        setBackgroundAndTextField(correct);
     }
 
     public String[] getCategories() {
@@ -145,7 +149,6 @@ public class FullscreenActivity extends FullscreenActivitySuper {
     }
 
     private void verifyAnswerAndMark(String answer) {
-        boolean correct = false;//Arrays.stream(getCategoriesObject()[idOfCorrectCategory]).anyMatch(answer::equals);
 
 //        Optional<String> correctText = Arrays.stream(getCategoriesObject()[idOfCorrectCategory])
 //                .findFirst();
@@ -157,21 +160,18 @@ public class FullscreenActivity extends FullscreenActivitySuper {
         if(ViewState.get().getCorrectText().contains(answer)) {
             correct = true;
         }
+        setBackgroundAndTextField(correct);
+    }
 
+    private void setBackgroundAndTextField(boolean correct) {
         View view = findViewById(R.id.background);
-
         if(correct) {
-            streak++;
             view.setBackgroundColor(MYGREEN);
         } else {
-            streak = 0;
             view.setBackgroundColor(MYRED);
         }
         populateTextField();
     }
-
-
-
 
 
     /*

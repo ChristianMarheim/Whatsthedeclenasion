@@ -41,9 +41,9 @@ public class ViewState {
     public String getTextContent() {
         String textContent = "Current category: [" + thiz.currentCategory + "]\n";
         if(thiz.iterations > 0) {
-            textContent += "Last category:[" + thiz.lastCategory + "]\n" +
-                    "Your answer=" + answer + "\n" +
-                    "LastCorrect=\n" + lastCorrectAnswerText + "";
+            textContent += "Last category: [" + thiz.lastCategory + "]\n" +
+                    "Your answer: [" + answer + "]\n\n" +
+                    "Last correct alternative:\n" + lastCorrectAnswerText + "";
         }
         return textContent;
     }
