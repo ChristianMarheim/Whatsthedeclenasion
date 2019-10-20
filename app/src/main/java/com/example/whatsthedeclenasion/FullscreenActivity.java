@@ -23,7 +23,7 @@ Stack<String> categoriesStack = new Stack<>();
 
 public class FullscreenActivity extends FullscreenActivitySuper {
 
-    private List<String> correctOptions;
+    private ArrayList<ArrayList<String>> list = new ArrayList<>();
 
     public FullscreenActivity() {
         super();
@@ -33,7 +33,7 @@ public class FullscreenActivity extends FullscreenActivitySuper {
 
 
 
-    External external;
+    External external = null; //new PhoneMock();
 
     int idOfCorrectCategory = -1;
     int NUMBER_OF_ANSWERS = 5;
@@ -58,13 +58,12 @@ public class FullscreenActivity extends FullscreenActivitySuper {
             @Override
             public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
                 String answer = (String) adapter.getItemAtPosition(position);
+                ViewState.get().buttonClick(answer);
 
                 verifyAnswerAndMark(answer);
 
                 final String[] mobileArray2 = getCategories();
                 getListView().setAdapter(new ArrayAdapter<>(thiz, R.layout.mylistviewitemlayout, mobileArray2));
-                ViewState.get().buttonClick();
-                populateTextField();
             }
         });
 
@@ -76,40 +75,61 @@ public class FullscreenActivity extends FullscreenActivitySuper {
 
     public String[] getCategories() {
         List<String> result = new ArrayList<>();
-        correctOptions = new ArrayList<>();
         String[][] categoriesObject = getCategoriesObject();
-        ArrayList<ArrayList<String>> list = new ArrayList<>();
+        list = new ArrayList<>();
         for(String[] category : categoriesObject){
             list.add(new ArrayList<>(Arrays.asList(category)));
         }
 
-        idOfCorrectCategory = -1;
+        List<String> correctCategory = getRandomCorrectCategory();
+        for(String corr : correctCategory)
+            ViewState.get().addCorrectText(corr);
 
-        for(int i = 0; i < NUMBER_OF_ANSWERS; i++) {
-            int randomIntegerCategory = getRandom(list.size());
-            if(idOfCorrectCategory < 0) {
-                idOfCorrectCategory = randomIntegerCategory;
-            }
-            int randomIntegerOption = getRandom(list.get(randomIntegerCategory).size());
-            String option = "";
-            try{
-                option = list.get(randomIntegerCategory).remove(randomIntegerOption%list.get(randomIntegerCategory).size());
-            } catch (Exception e){
-                int a = 0;
-                int b = a;
-            }
-
-            result.add(option);
-
-            if(randomIntegerCategory == idOfCorrectCategory) {
-                String categoryName = getCategoriesNames()[idOfCorrectCategory];
+        for(int i = 0; i < list.size(); i++){
+            if(list.get(i).equals(correctCategory)){
+                String categoryName = getCategoriesNames()[i];
                 ViewState.get().setCurrentCategory(categoryName);
-                ViewState.get().addCorrectText(", \"" + option + "\"");
-                correctOptions.add(option);
+                idOfCorrectCategory = i;
             }
         }
 
+        int randomIntegerCategory = idOfCorrectCategory;
+        int randomIntegerOption = getRandom(list.get(randomIntegerCategory).size());
+
+        String option = getCategoryAndRemoveButChecked(randomIntegerCategory, randomIntegerOption);
+        result.add(option);
+
+        for(int i = 0; i < NUMBER_OF_ANSWERS; i++) {
+            randomIntegerCategory = getRandom(list.size());
+            randomIntegerOption = getRandom(list.get(randomIntegerCategory).size());
+
+            option = getCategoryAndRemoveButChecked(randomIntegerCategory, randomIntegerOption);
+            result.add(option);
+
+//            if(randomIntegerCategory == idOfCorrectCategory) {
+//                if(!ViewState.get().getCorrectText().contains(option) && option != null){
+//                    ViewState.get().addCorrectText(option);
+//                }
+//            }
+        }
+
         return result.toArray(new String[]{});
+    }
+
+    private String getCategoryAndRemoveButChecked(int randomIntegerCategory, int randomIntegerOption) {
+        try {
+            ArrayList<String> rootCategory = list.get(randomIntegerCategory);
+            int indexToRemove = randomIntegerOption% list.get(randomIntegerCategory).size();
+            if(indexToRemove > rootCategory.size()){
+                indexToRemove = indexToRemove % rootCategory.size();
+            }
+            String option = rootCategory.remove(indexToRemove);
+            return option;
+        } catch (Exception e){
+            int a = 0;
+            int b = a;
+        }
+        throw new RuntimeException("SHIT IS FUCKED UP!");
     }
 
     private int getRandom(int i) {
@@ -131,11 +151,10 @@ public class FullscreenActivity extends FullscreenActivitySuper {
 //                .findFirst();
 
 //        if(correctText.isPresent()) {
-        ViewState.get().setCorrectText(correctOptions.toString());
         ViewState.get().setLastCategory(getCategoriesNames()[idOfCorrectCategory]);
 
 
-        if(correctOptions.contains(answer)) {
+        if(ViewState.get().getCorrectText().contains(answer)) {
             correct = true;
         }
 
@@ -181,6 +200,14 @@ public class FullscreenActivity extends FullscreenActivitySuper {
                 //debugSlice(dative)
         };
         return result;
+    }
+
+
+    private List<String> getRandomCorrectCategory() {
+        if(debug){
+            return Arrays.asList(list.get(0).toArray(new String[list.get(0).size()]));
+        }
+        return Arrays.asList(categories[random.nextInt(categories.length)]);
     }
 
     private String[] debugSlice(String [] input) {

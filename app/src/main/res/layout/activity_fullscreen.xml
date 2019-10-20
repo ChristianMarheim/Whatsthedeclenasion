@@ -21,7 +21,7 @@
         <ListView
             android:id="@+id/myListView"
             android:layout_width="match_parent"
-            android:layout_height="669dp" />
+            android:layout_height="437dp" />
 
 
     </FrameLayout>
@@ -29,7 +29,7 @@
     <TextView
         android:id="@+id/caseTextView"
         android:layout_width="366dp"
-        android:layout_height="50dp"
+        android:layout_height="281dp"
         android:layout_gravity="bottom"
         android:text="TextView" />
 

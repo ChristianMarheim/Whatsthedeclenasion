@@ -1,10 +1,11 @@
 package com.example.whatsthedeclenasion;
 
 public class ViewState {
-    private static String nextCorrectAnswerText;
-    private static String lastCorrectAnswerText;
+    private static String nextCorrectAnswerText = "";
+    private static String lastCorrectAnswerText = "";
     private static String currentCategory;
     private static String lastCategory;
+    private static String answer;
 
     private static int iterations = 0;
 
@@ -16,9 +17,10 @@ public class ViewState {
         return thiz;
     }
 
-    public void buttonClick(){
+    public void buttonClick(String answer){
+        thiz.answer = answer;
         thiz.lastCorrectAnswerText = thiz.nextCorrectAnswerText;
-        thiz.nextCorrectAnswerText = null;
+        thiz.nextCorrectAnswerText = "";
         thiz.iterations++;
     }
 
@@ -30,20 +32,29 @@ public class ViewState {
         thiz.lastCategory = input;
     }
 
-    public void setCorrectText(String input) {
-        thiz.nextCorrectAnswerText = input;
+    public String getCorrectText() {
+        if(thiz.lastCorrectAnswerText == null)
+            return "error";
+        return thiz.lastCorrectAnswerText;
     }
 
-
     public String getTextContent() {
-        String textContent = thiz.currentCategory;
+        String textContent = "Current category: [" + thiz.currentCategory + "]\n";
         if(thiz.iterations > 0) {
-            textContent += "\n lastCat='" + thiz.lastCategory + "', last='" + lastCorrectAnswerText + "'";
+            textContent += "Last category:[" + thiz.lastCategory + "]\n" +
+                    "Your answer=" + answer + "\n" +
+                    "LastCorrect=\n" + lastCorrectAnswerText + "";
         }
         return textContent;
     }
 
     public void addCorrectText(String s) {
-        nextCorrectAnswerText += s;
+        if(s != null && !s.isEmpty() && !nextCorrectAnswerText.contains(s)){
+            nextCorrectAnswerText += "[" + s + "]\n";
+        } else {
+            int a = 0;
+            int b = a;
+        }
+
     }
 }
