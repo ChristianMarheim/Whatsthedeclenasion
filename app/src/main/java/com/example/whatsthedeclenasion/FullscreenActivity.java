@@ -9,7 +9,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 
 import static com.example.whatsthedeclenasion.Data.*;
@@ -32,16 +31,18 @@ public class FullscreenActivity extends FullscreenActivitySuper {
             NUMBER_OF_ANSWERS = DEBUG_ITEMS;
     }
 
+
+
+    External external;
+
     int idOfCorrectCategory = -1;
     int NUMBER_OF_ANSWERS = 5;
     int streak = 0;
 
-   // String nextCorrectAnswerText = "";
-    // String lastCorrectAnswerText = "";
     private String[] listOfAnswers;
     private Random random = new Random();
 
-    private boolean debug = false;
+    public boolean debug = false;
     final int DEBUG_ITEMS = 2;
 
     public void drawUi() {
@@ -73,7 +74,7 @@ public class FullscreenActivity extends FullscreenActivitySuper {
         populateTextField();
     }
 
-    private String[] getCategories() {
+    public String[] getCategories() {
         List<String> result = new ArrayList<>();
         correctOptions = new ArrayList<>();
         String[][] categoriesObject = getCategoriesObject();
@@ -85,12 +86,19 @@ public class FullscreenActivity extends FullscreenActivitySuper {
         idOfCorrectCategory = -1;
 
         for(int i = 0; i < NUMBER_OF_ANSWERS; i++) {
-            int randomIntegerCategory = random.nextInt(list.size());
-            if(idOfCorrectCategory < 0){
+            int randomIntegerCategory = getRandom(list.size());
+            if(idOfCorrectCategory < 0) {
                 idOfCorrectCategory = randomIntegerCategory;
             }
-            int randomIntegerOption = random.nextInt(list.get(randomIntegerCategory).size());
-            String option = list.get(randomIntegerCategory).remove(randomIntegerOption);
+            int randomIntegerOption = getRandom(list.get(randomIntegerCategory).size());
+            String option = "";
+            try{
+                option = list.get(randomIntegerCategory).remove(randomIntegerOption%list.get(randomIntegerCategory).size());
+            } catch (Exception e){
+                int a = 0;
+                int b = a;
+            }
+
             result.add(option);
 
             if(randomIntegerCategory == idOfCorrectCategory) {
@@ -102,6 +110,13 @@ public class FullscreenActivity extends FullscreenActivitySuper {
         }
 
         return result.toArray(new String[]{});
+    }
+
+    private int getRandom(int i) {
+        if(external != null){
+            return external.random(i - 1);
+        }
+        return random.nextInt(i);
     }
 
     private void populateTextField() {
@@ -188,4 +203,13 @@ public class FullscreenActivity extends FullscreenActivitySuper {
         }
     }
 
+    public External getExternal() {
+        return external;
+    }
+
+    public void setExternal(External external) {
+        this.external = external;
+    }
+
 }
+
